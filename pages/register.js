@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '../components/layout/Layout';
 import Input from '../components/common/Input';
+import Wrapper from '../components/layout/Wrapper';
 
 const register = () => {
   const [name, setName] = useState('');
@@ -10,7 +11,7 @@ const register = () => {
 
   return (
     <Layout>
-      <div className='flex flex-col justify-center items-center mt-16 md:mt-48 lg:mt-64 xl:mt-32 w-11/12 md:w-3-10 mx-auto'>
+      <Wrapper>
         <h1 className='text-5xl mb-4'>Sign Up</h1>
         <p className='max-w-xs text-center'>
           A description of what you get with a paid plan that can be either long
@@ -45,7 +46,7 @@ const register = () => {
             value={repeatPassword}
           />
         </div>
-      </div>
+      </Wrapper>
     </Layout>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '../components/layout/Layout';
 import Input from '../components/common/Input';
+import Wrapper from '../components/layout/Wrapper';
 
 const login = () => {
   const [email, setEmail] = useState('');
@@ -8,7 +9,7 @@ const login = () => {
 
   return (
     <Layout>
-      <div className='flex flex-col justify-center items-center mt-48 w-3-10 mx-auto'>
+      <Wrapper>
         <h1 className='text-5xl'>Log In</h1>
 
         <div className='flex flex-col space-y-10 mt-6 w-full'>
@@ -28,7 +29,7 @@ const login = () => {
           />
         </div>
         <p className='mt-6'>Forgot Password</p>
-      </div>
+      </Wrapper>
     </Layout>
   );
 };
