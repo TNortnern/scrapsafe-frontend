@@ -16,6 +16,7 @@ const IndexPage = () => {
     <>
       <Clock />
       <Counter />
+      
     </>
   )
 }

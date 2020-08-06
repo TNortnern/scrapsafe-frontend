@@ -1,4 +1,6 @@
 import { Provider } from 'react-redux'
+import "../styles/index.css";
+
 
 import store from '../store'
 
