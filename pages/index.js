@@ -1,24 +1,11 @@
-import { useDispatch } from 'react-redux'
-
-import Clock from '../components/clock'
-import Counter from '../components/counter'
-import { tick } from '../lib/slices/clockSlice'
-import useInterval from '../lib/useInterval'
-
 const IndexPage = () => {
-  const dispatch = useDispatch()
-  // Tick the time every second
-  useInterval(() => {
-    dispatch(tick({ light: true, lastUpdate: Date.now() }))
-  }, 1000)
-
   return (
-    <>
-      <Clock />
-      <Counter />
-      
-    </>
-  )
-}
+    <div className="bg-blue-900 flex h-screen w-screen items-center justify-center">
+      <div className="bg-white rounded-sm p-8">
+        <span className="animate-pulse">Tailwind with redux toolkit</span>
+      </div>
+    </div>
+  );
+};
 
-export default IndexPage
+export default IndexPage;
