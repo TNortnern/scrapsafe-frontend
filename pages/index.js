@@ -4,7 +4,12 @@ import Input from '../components/common/Input';
 import Wrapper from '../components/layout/Wrapper';
 import Button from '../components/common/Button';
 
+import AuthHOC from '../components/AuthHOC';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../lib/slices/authSlice';
+
 const IndexPage = () => {
+  const user = useSelector(selectUser);
   const [upload, setUpload] = useState(null);
 
   const onChange = (file) => {
@@ -17,6 +22,7 @@ const IndexPage = () => {
     };
   };
 
+  console.log(user);
   return (
     <Layout>
       <Wrapper>
@@ -45,4 +51,4 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;
+export default AuthHOC(IndexPage);
