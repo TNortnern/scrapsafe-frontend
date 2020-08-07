@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Layout from '../components/layout/Layout';
 import Input from '../components/common/Input';
 import Wrapper from '../components/layout/Wrapper';
+import Button from '../components/common/Button';
 
 const login = () => {
   const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ const login = () => {
       <Wrapper>
         <h1 className='text-5xl'>Log In</h1>
 
-        <div className='flex flex-col space-y-10 mt-6 w-full'>
+        <div className='flex flex-col space-y-10 mt-6 w-full '>
           <Input
             onChange={(e) => setEmail(e.target.value)}
             className='my-4 px-4'
@@ -28,6 +29,7 @@ const login = () => {
             value={password}
           />
         </div>
+        <Button className='mt-8 hover:opacity-75'>SignUp</Button>
         <p className='mt-6'>Forgot Password</p>
       </Wrapper>
     </Layout>

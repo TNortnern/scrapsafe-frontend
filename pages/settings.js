@@ -1,5 +1,7 @@
 import Layout from '../components/layout/Layout';
 import Wrapper from '../components/layout/Wrapper';
+import FreePaidButton from '../components/FreePaidButton';
+import Button from '../components/common/Button';
 
 const settings = () => {
   return (
@@ -10,14 +12,9 @@ const settings = () => {
           A description of what you get with a paid plan that can be either long
           or short
         </p>
-        <div className='flex mt-6 w-full'>
-          <button className='w-1/2 text-center py-1 active'>Free</button>
-          <button className='w-1/2 text-center py-1 inactive'>Paid</button>
-        </div>
+        <FreePaidButton />
 
-        <button className='bg-custom text-white py-1 w-4/6 mt-10'>
-          Confirm Changes
-        </button>
+        <Button className='w-4/6 mt-10'>Confirm Changes</Button>
       </Wrapper>
     </Layout>
   );

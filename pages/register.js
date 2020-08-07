@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Layout from '../components/layout/Layout';
 import Input from '../components/common/Input';
 import Wrapper from '../components/layout/Wrapper';
+import FreePaidButton from '../components/FreePaidButton';
 
 const register = () => {
   const [name, setName] = useState('');
@@ -17,10 +18,7 @@ const register = () => {
           A description of what you get with a paid plan that can be either long
           or short
         </p>
-        <div className='flex mt-4 w-full'>
-          <div className='w-1/2 text-center py-1 active'>Free</div>
-          <div className='w-1/2 text-center py-1 inactive'>Paid</div>
-        </div>
+        <FreePaidButton />
         <div className='flex flex-col space-y-10 mt-6 w-full'>
           <Input
             onChange={(e) => setName(e.target.value)}
@@ -46,6 +44,10 @@ const register = () => {
             value={repeatPassword}
           />
         </div>
+
+        <button className='bg-green-custom text-white mt-8 px-2 py-1 hover:opacity-75'>
+          SignUp
+        </button>
       </Wrapper>
     </Layout>
   );

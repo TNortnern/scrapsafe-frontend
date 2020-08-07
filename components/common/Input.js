@@ -7,7 +7,7 @@ const Input = ({ className, onChange, placeholder, value, type }) => (
     type={type}
     onChange={onChange}
     value={value}
-    className={`border-b border-custom placeholder-black pl-1 ${className}`}
+    className={`border-b border-green-custom placeholder-black pl-1 ${className}`}
   />
 );
 

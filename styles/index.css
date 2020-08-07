@@ -7,28 +7,25 @@ body {
   font-family: 'Rubik', sans-serif;
 }
 .active {
-  background-color: #6db35a;
-  color: white;
+  @apply bg-green-custom text-white;
 }
 
 .inactive {
-  background-color: white;
-  color: #6db35a;
-  border: 1px solid #6db35a;
+  @apply border border-green-custom text-green-custom bg-white;
 }
 
-.border-custom {
-  border-color: #6db35a;
+.inactive:hover {
+  @apply active opacity-75;
 }
 
-.bg-custom {
-  background-color: #6db35a;
+.btn {
+  @apply px-2 py-1;
 }
 
-.text-custom {
-  color: #6db35a;
+.btn-green {
+  @apply btn bg-green-custom text-white;
 }
 
-.w-custom-30 {
-  width: 30%;
+.btn-white {
+  @apply btn bg-white text-green-custom border border-green-custom;
 }
