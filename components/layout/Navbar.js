@@ -2,13 +2,16 @@ import React from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, setUser } from "../../lib/slices/authSlice";
+import { Router } from "next/router";
 
 const Navbar = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   return (
-    <nav className="flex justify-between py-2 mx-4">
-      <img src="/Logo.png" alt="" />
+    <nav className="flex justify-between py-2 mx-4 relative z-50">
+      <img className="cursor-pointer" onClick={() => {
+        Router.push('/')
+      }} src="/Logo.png" alt="" />
 
       <ul className="flex space-x-2">
         {!user ? (
