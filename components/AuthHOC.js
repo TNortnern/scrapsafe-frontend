@@ -1,29 +1,9 @@
 import React, { useState, useEffect } from 'react';
-//   const withAuth = () => {
-//     const [user, setUser] = useState(null);
-//     const [loading, setLoading] = useState(false);
-//     useEffect(() => {
-//       // alert("happened");
-//     }, []);
-
-//     const toRender = () => {
-//       if (loading) {
-//         return "loading..";
-//       } else {
-//         if (user) {
-//           return 'user';
-//         } else {
-//           return null;
-//         }
-//       }
-//     };
-//     return <>{toRender()}</>;
-//   };
-
-// export default withAuth;
-
-// ____________________________________________________________________
+import gql from 'graphql-tag'
 import Router from 'next/router';
+import withApollo from '../lib/withApollo';
+import { parseCookies, setCookie, destroyCookie } from "nookies";
+
 const login = '/login?redirected=true'; // Define your login route address.
 
 /**
@@ -31,19 +11,34 @@ const login = '/login?redirected=true'; // Define your login route address.
  * It depends on you and your auth service provider.
  * @returns {{auth: null}}
  */
-const checkUserAuthentication = () => {
-  if (true) {
-    return { auth: true }; // change null to { isAdmin: true } for test it.
-  } else {
-    return { auth: null }; // change null to { isAdmin: true } for test it.
+const checkUserAuthentication = async (apollo) => {
+  let auth;
+  try {
+    const query = await apollo.query({
+      query: gql`query {
+        self {
+          id
+        }
+      }`
+    })
+    const { data } = query;
+    console.log('data', data)
+     if (data.self) {
+       auth = true;
+     }
+  } catch (err) {
+    // destroyCookie()
+    auth = false;
   }
+    return { auth }; // change null to { isAdmin: true } for test it.
 };
 
 export default (WrappedComponent) => {
   const hocComponent = ({ ...props }) => <WrappedComponent {...props} />;
 
-  hocComponent.getInitialProps = async ({ res }) => {
-    const userAuth = await checkUserAuthentication();
+  hocComponent.getInitialProps = async (ctx) => {
+    const { res } = ctx;
+    const userAuth = await checkUserAuthentication(ctx.apolloClient);
 
     // Are you an authorized user or not?
     if (!userAuth?.auth) {
@@ -64,5 +59,5 @@ export default (WrappedComponent) => {
     return { userAuth };
   };
 
-  return hocComponent;
+  return withApollo(hocComponent);
 };
