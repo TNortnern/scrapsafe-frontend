@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, setUser } from "../../lib/slices/authSlice";
-import { Router } from "next/router";
+import Router from "next/router";
 
 const Navbar = () => {
   const user = useSelector(selectUser);
