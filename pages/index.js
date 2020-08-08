@@ -7,11 +7,11 @@ import Button from '../components/common/Button';
 import AuthHOC from '../components/AuthHOC';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../lib/slices/authSlice';
+import withApollo from '../lib/withApollo';
 
-const IndexPage = () => {
+const IndexPage = (props) => {
   const user = useSelector(selectUser);
   const [upload, setUpload] = useState(null);
-
   const onChange = (file) => {
     // var file = this.refs.file.files[0];
     var reader = new FileReader();
@@ -22,12 +22,10 @@ const IndexPage = () => {
     };
   };
 
-  console.log(user);
   return (
     <Layout>
       <Wrapper>
         <h1 className='text-5xl'>Upload</h1>
-
         <img className=' max-w-sm' src={upload && upload[0]} />
         <div>
           <label htmlFor='fileUpload'>
@@ -51,4 +49,4 @@ const IndexPage = () => {
   );
 };
 
-export default AuthHOC(IndexPage);
+export default AuthHOC(withApollo(IndexPage));

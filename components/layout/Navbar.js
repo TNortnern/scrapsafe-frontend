@@ -6,7 +6,6 @@ import { selectUser, setUser } from "../../lib/slices/authSlice";
 const Navbar = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  console.log("user", user);
   return (
     <nav className="flex justify-between py-2 mx-4">
       <img src="/Logo.png" alt="" />

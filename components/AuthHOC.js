@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import gql from 'graphql-tag'
 import Router from 'next/router';
 import withApollo from '../lib/withApollo';
-import { parseCookies, setCookie, destroyCookie } from "nookies";
 
 const login = '/login?redirected=true'; // Define your login route address.
 
@@ -16,18 +15,19 @@ const checkUserAuthentication = async (apollo) => {
   try {
     const query = await apollo.query({
       query: gql`query {
-        self {
+        me {
           id
         }
       }`
     })
+    console.log('query', query)
     const { data } = query;
-    console.log('data', data)
-     if (data.self) {
+     if (data.me) {
        auth = true;
      }
   } catch (err) {
     // destroyCookie()
+    console.log('err', err)
     auth = false;
   }
     return { auth }; // change null to { isAdmin: true } for test it.
