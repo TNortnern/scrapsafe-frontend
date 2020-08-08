@@ -8,6 +8,7 @@ import { setUser } from "../lib/slices/authSlice";
 import { LOGIN } from "../lib/graphql/auth";
 import { useMutation } from "@apollo/client";
 import withApollo from "../lib/withApollo";
+import Link from "next/link";
 const login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,14 +49,14 @@ const login = () => {
         >
           <Input
             onChange={(e) => setEmail(e.target.value)}
-            className="px-4"
+            className="px-4 lg:w-64 mx-auto"
             type="email"
             placeholder="Email"
             value={email}
           />
           <Input
             onChange={(e) => setPassword(e.target.value)}
-            className="px-4"
+            className="px-4 lg:w-64 mx-auto"
             type="password"
             placeholder="Password"
             value={password}
@@ -66,7 +67,9 @@ const login = () => {
             </Button>
           </div>
         </form>
-        <p className="mt-6">Forgot Password</p>
+        <Link href="/forgotpassword" className="mt-6">
+          <a className="mt-4 hover:text-green-custom">Forgot your password?</a>
+        </Link>
       </Wrapper>
     </Layout>
   );
