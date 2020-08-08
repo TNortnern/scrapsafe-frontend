@@ -9,6 +9,7 @@ import { LOGIN } from "../lib/graphql/auth";
 import { useMutation } from "@apollo/client";
 import withApollo from "../lib/withApollo";
 import Link from "next/link";
+import { withGuest } from "../components/AuthHOC";
 const login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -75,4 +76,4 @@ const login = () => {
   );
 };
 
-export default withApollo(login);
+export default withGuest(withApollo(login));

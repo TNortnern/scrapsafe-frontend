@@ -4,6 +4,7 @@ import Input from '../components/common/Input';
 import Wrapper from '../components/layout/Wrapper';
 import FreePaidButton from '../components/FreePaidButton';
 import Button from '../components/common/Button';
+import { withGuest } from '../components/AuthHOC';
 
 const register = () => {
   const [name, setName] = useState('');
@@ -56,4 +57,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default withGuest(register);

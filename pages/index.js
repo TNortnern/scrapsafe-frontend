@@ -4,7 +4,7 @@ import Input from '../components/common/Input';
 import Wrapper from '../components/layout/Wrapper';
 import Button from '../components/common/Button';
 
-import AuthHOC from '../components/AuthHOC';
+import AuthHOC, { withAuthed } from '../components/AuthHOC';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../lib/slices/authSlice';
 import withApollo from '../lib/withApollo';
@@ -49,4 +49,4 @@ const IndexPage = (props) => {
   );
 };
 
-export default AuthHOC(withApollo(IndexPage));
+export default withAuthed(withApollo(IndexPage));

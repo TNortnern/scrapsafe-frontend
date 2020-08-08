@@ -12,6 +12,7 @@ const login = '/login?redirected=true'; // Define your login route address.
  */
 const checkUserAuthentication = async (apollo) => {
   let auth;
+  let user;
   try {
     const query = await apollo.query({
       query: gql`query {
@@ -24,22 +25,23 @@ const checkUserAuthentication = async (apollo) => {
     const { data } = query;
      if (data.me) {
        auth = true;
+       user = data.me
      }
   } catch (err) {
     // destroyCookie()
     console.log('err', err)
     auth = false;
   }
-    return { auth }; // change null to { isAdmin: true } for test it.
+    return { auth, user }; // change null to { isAdmin: true } for test it.
 };
 
-export default (WrappedComponent) => {
+export const withAuthed = (WrappedComponent) => {
   const hocComponent = ({ ...props }) => <WrappedComponent {...props} />;
 
   hocComponent.getInitialProps = async (ctx) => {
     const { res } = ctx;
     const userAuth = await checkUserAuthentication(ctx.apolloClient);
-
+    console.log('ctx', ctx.store)
     // Are you an authorized user or not?
     if (!userAuth?.auth) {
       // Handle server-side and client-side rendering.
@@ -50,6 +52,34 @@ export default (WrappedComponent) => {
         res?.end();
       } else {
         Router.replace(login);
+      }
+    } else if (WrappedComponent.getInitialProps) {
+      const wrappedProps = await WrappedComponent.getInitialProps(userAuth);
+      return { ...wrappedProps, userAuth };
+    }
+
+    return { userAuth };
+  };
+
+  return withApollo(hocComponent);
+};
+export const withGuest = (WrappedComponent) => {
+  const hocComponent = ({ ...props }) => <WrappedComponent {...props} />;
+
+  hocComponent.getInitialProps = async (ctx) => {
+    const { res } = ctx;
+    const userAuth = await checkUserAuthentication(ctx.apolloClient);
+
+    // Are you an authorized user or not?
+    if (userAuth?.auth) {
+      // Handle server-side and client-side rendering.
+      if (res) {
+        res?.writeHead(302, {
+          Location: '/',
+        });
+        res?.end();
+      } else {
+        Router.replace('/');
       }
     } else if (WrappedComponent.getInitialProps) {
       const wrappedProps = await WrappedComponent.getInitialProps(userAuth);
