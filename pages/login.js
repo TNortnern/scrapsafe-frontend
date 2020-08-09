@@ -35,43 +35,43 @@ const login = () => {
   return (
     <Layout>
       <Wrapper>
-        <h1 className="text-5xl">Log In</h1>
-        {user ? JSON.stringify(user) : ""}
-        <form
-          method="POST"
-          action="#"
-          onSubmit={(e) => {
-            e.preventDefault();
-            attempt();
-          }}
-          className="flex flex-col space-y-10 mt-6 w-full "
-        >
-          <Input
-            onChange={(e) => setEmail(e.target.value)}
-            className="px-4 lg:w-64 mx-auto"
-            type="email"
-            placeholder="Email"
-            value={email}
-          />
-          <Input
-            onChange={(e) => setPassword(e.target.value)}
-            className="px-4 lg:w-64 mx-auto"
-            type="password"
-            placeholder="Password"
-            value={password}
-          />
-          <div className="text-center">
-            <Button type="submit" className="hover:opacity-75 inline-block">
-              Login
-            </Button>
-          </div>
-        </form>
-        <span
-          href="/forgotpassword"
-          className="mt-4 hover:text-green-custom cursor-pointer"
-        >
-          Forgot your password?
-        </span>
+        <div className="text-center">
+          <h1 className="text-5xl">Log In</h1>
+          {user ? JSON.stringify(user) : ""}
+          <form
+            method="POST"
+            action="#"
+            onSubmit={(e) => {
+              e.preventDefault();
+              attempt();
+            }}
+            className="flex flex-col space-y-10 mt-6 w-auth-inputs"
+          >
+            <Input
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="Email"
+              value={email}
+            />
+            <Input
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="Password"
+              value={password}
+            />
+            <div className="text-center">
+              <Button type="submit" className="hover:opacity-75 inline-block">
+                Login
+              </Button>
+            </div>
+          </form>
+          <span
+            href="/forgotpassword"
+            className="mt-4 block hover:text-green-custom cursor-pointer"
+          >
+            Forgot your password?
+          </span>
+        </div>
       </Wrapper>
     </Layout>
   );

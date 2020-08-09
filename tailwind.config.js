@@ -7,6 +7,7 @@ module.exports = {
       },
       width: {
         '3-10': '30%',
+        'auth-inputs': '316px'
       },
     },
   },

@@ -16,13 +16,13 @@ const register = () => {
     <Layout>
       <Wrapper>
         <div>
-          <h1 className="text-5xl mb-4">Sign Up</h1>
+          <h1 className="text-5xl mb-4 text-center">Sign Up</h1>
           <p className="max-w-xs text-center">
             A description of what you get with a paid plan that can be either
             long or short
           </p>
           <FreePaidButton />
-          <div className="flex flex-col space-y-10 mt-6 w-full">
+          <div className="flex flex-col space-y-10 mt-6 w-auth-inputs">
             <Input
               onChange={(e) => setName(e.target.value)}
               placeholder="Name"
@@ -48,9 +48,7 @@ const register = () => {
             />
           </div>
 
-          <Button className="mx-auto block mt-5">
-            Sign Up
-          </Button>
+          <Button className="mx-auto block mt-5">Sign Up</Button>
         </div>
       </Wrapper>
     </Layout>
