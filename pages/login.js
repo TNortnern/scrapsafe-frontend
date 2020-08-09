@@ -36,8 +36,10 @@ const login = () => {
     <Layout>
       <Wrapper>
         <h1 className="text-5xl">Log In</h1>
-        {user ? JSON.stringify(user) : ''}
+        {user ? JSON.stringify(user) : ""}
         <form
+          method="POST"
+          action="#"
           onSubmit={(e) => {
             e.preventDefault();
             attempt();
@@ -64,9 +66,12 @@ const login = () => {
             </Button>
           </div>
         </form>
-        <Link href="/forgotpassword" className="mt-6">
-          <a className="mt-4 hover:text-green-custom">Forgot your password?</a>
-        </Link>
+        <span
+          href="/forgotpassword"
+          className="mt-4 hover:text-green-custom cursor-pointer"
+        >
+          Forgot your password?
+        </span>
       </Wrapper>
     </Layout>
   );
