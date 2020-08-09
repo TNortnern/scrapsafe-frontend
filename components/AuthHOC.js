@@ -30,7 +30,6 @@ export const withAuthed = (Component = React.Component) =>
         pageProps = await Component.getInitialProps(ctx);
       }
       const result = await fetchUser(ctx);
-      console.log('result', result)
       if (result.fetchedUser) return { pageProps, fetchedUser: result.fetchedUser };
       return redirect("login");
     }
