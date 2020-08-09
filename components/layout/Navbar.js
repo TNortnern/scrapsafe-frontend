@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
-import { selectUser, setUser } from "../../lib/slices/authSlice";
 import Router from "next/router";
+import AppContext from "../context/AuthContext";
+import { remove } from "js-cookie";
 
 const Navbar = () => {
-  const user = useSelector(selectUser);
-  const dispatch = useDispatch();
+  const { user, setUser } = useContext(AppContext);
   return (
     <nav className="flex justify-between py-2 mx-4 relative z-50">
-      <img className="cursor-pointer" onClick={() => {
-        Router.push('/')
-      }} src="/Logo.png" alt="" />
+      <img
+        className="cursor-pointer"
+        onClick={() => {
+          Router.push("/");
+        }}
+        src="/Logo.png"
+        alt=""
+      />
 
       <ul className="flex space-x-2">
         {!user ? (
@@ -38,9 +42,14 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <span onClick={() => {
-                dispatch(setUser(null))
-              }} className="hover:text-green-custom cursor-pointer">
+              <span
+                onClick={() => {
+                  setUser(null);
+                  remove("user_token");
+                  Router.push("/login");
+                }}
+                className="hover:text-green-custom cursor-pointer"
+              >
                 Log Out
               </span>
             </li>

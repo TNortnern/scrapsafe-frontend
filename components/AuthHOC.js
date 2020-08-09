@@ -1,93 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import gql from 'graphql-tag'
-import Router from 'next/router';
-import withApollo from '../lib/withApollo';
+import React from "react";
+import Router from "next/router";
+import { fetchUser } from "../lib/auth";
 
-const login = '/login?redirected=true'; // Define your login route address.
+let res;
+const redirect = (route = "") => {
+  // on client
+  if (typeof window !== "undefined" && window.document !== undefined) {
+    Router.push(`/${route}`);
+  }
+  if (res) {
+    res.writeHead(301, {
+      Location: `/${route}`,
+    });
+    res.end();
+  }
+};
 
 /**
- * Check user authentication and authorization
- * It depends on you and your auth service provider.
- * @returns {{auth: null}}
+ * @param {React.Component} Component pass the component you need to check for authentication
+ * @returns redirect if not authenticated
  */
-const checkUserAuthentication = async (apollo) => {
-  let auth;
-  let user;
-  try {
-    const query = await apollo.query({
-      query: gql`query {
-        me {
-          id
-        }
-      }`
-    })
-    console.log('query', query)
-    const { data } = query;
-     if (data.me) {
-       auth = true;
-       user = data.me
-     }
-  } catch (err) {
-    // destroyCookie()
-    console.log('err', err)
-    auth = false;
-  }
-    return { auth, user }; // change null to { isAdmin: true } for test it.
-};
-
-export const withAuthed = (WrappedComponent) => {
-  const hocComponent = ({ ...props }) => <WrappedComponent {...props} />;
-
-  hocComponent.getInitialProps = async (ctx) => {
-    const { res } = ctx;
-    const userAuth = await checkUserAuthentication(ctx.apolloClient);
-    console.log('ctx', ctx.store)
-    // Are you an authorized user or not?
-    if (!userAuth?.auth) {
-      // Handle server-side and client-side rendering.
-      if (res) {
-        res?.writeHead(302, {
-          Location: login,
-        });
-        res?.end();
-      } else {
-        Router.replace(login);
+export const withAuthed = (Component = React.Component) =>
+  class AuthComponent extends React.Component {
+    static async getInitialProps(ctx) {
+      // allows redirect function to use response
+      res = ctx.ctx.res;
+      let pageProps = {};
+      if (Component.getInitialProps) {
+        pageProps = await Component.getInitialProps(ctx);
       }
-    } else if (WrappedComponent.getInitialProps) {
-      const wrappedProps = await WrappedComponent.getInitialProps(userAuth);
-      return { ...wrappedProps, userAuth };
+      const result = await fetchUser(ctx);
+      console.log('result', result)
+      if (result.fetchedUser) return { pageProps, fetchedUser: result.fetchedUser };
+      return redirect("login");
     }
 
-    return { userAuth };
+    render() {
+      return <Component {...this.props} />;
+    }
   };
 
-  return withApollo(hocComponent);
-};
-export const withGuest = (WrappedComponent) => {
-  const hocComponent = ({ ...props }) => <WrappedComponent {...props} />;
-
-  hocComponent.getInitialProps = async (ctx) => {
-    const { res } = ctx;
-    const userAuth = await checkUserAuthentication(ctx.apolloClient);
-
-    // Are you an authorized user or not?
-    if (userAuth?.auth) {
-      // Handle server-side and client-side rendering.
-      if (res) {
-        res?.writeHead(302, {
-          Location: '/',
-        });
-        res?.end();
-      } else {
-        Router.replace('/');
+/**
+ * @param {React.Component} Component pass the component you need to check for authentication
+ * @returns redirect if already authenticated
+ */
+export const withGuest = (Component = React.Component) =>
+  class AuthComponent extends React.Component {
+    static async getInitialProps(ctx) {
+      // allows redirect function to use response
+      res = ctx.ctx.res;
+      let pageProps = {};
+      if (Component.getInitialProps) {
+        pageProps = await Component.getInitialProps(ctx);
       }
-    } else if (WrappedComponent.getInitialProps) {
-      const wrappedProps = await WrappedComponent.getInitialProps(userAuth);
-      return { ...wrappedProps, userAuth };
+      const result = await fetchUser(ctx);
+      if (result.error) return { pageProps };
+      redirect();
     }
 
-    return { userAuth };
+    render() {
+      return <Component {...this.props} />;
+    }
   };
-
-  return withApollo(hocComponent);
-};

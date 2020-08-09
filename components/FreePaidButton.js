@@ -2,21 +2,18 @@ import React, { useState } from 'react';
 
 const FreePaidButton = () => {
   const [active, setActive] = useState('free');
+  const classes = "w-32 sm:w-40 text-center py-1";
   return (
-    <div className='flex mt-4 w-full'>
+    <div className="flex mt-4 justify-center">
       <button
-        className={`${
-          active === 'free' ? 'active' : 'inactive'
-        } w-1/2 text-center py-1`}
-        onClick={() => setActive('free')}
+        className={`${classes} ${active === "free" ? "active" : "inactive"}`}
+        onClick={() => setActive("free")}
       >
         Free
       </button>
       <button
-        className={`${
-          active === 'paid' ? 'active' : 'inactive'
-        } w-1/2 text-center py-1`}
-        onClick={() => setActive('paid')}
+        className={`${classes} ${active === "paid" ? "active" : "inactive"}`}
+        onClick={() => setActive("paid")}
       >
         Paid
       </button>

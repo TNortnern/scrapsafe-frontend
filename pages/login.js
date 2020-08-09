@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Layout from "../components/layout/Layout";
 import Input from "../components/common/Input";
 import Wrapper from "../components/layout/Wrapper";
 import Button from "../components/common/Button";
-import { useDispatch } from "react-redux";
-import { setUser } from "../lib/slices/authSlice";
 import { LOGIN } from "../lib/graphql/auth";
 import { useMutation } from "@apollo/client";
 import withApollo from "../lib/withApollo";
 import Link from "next/link";
 import { withGuest } from "../components/AuthHOC";
+import AppContext from "../components/context/AuthContext";
+
+import Router from "next/router";
 const login = () => {
   const [email, setEmail] = useState("");
+  const { setUser, user } = useContext(AppContext)
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
   const [login, loginOptions] = useMutation(LOGIN, {
     variables: {
       email,
@@ -23,8 +24,9 @@ const login = () => {
   const attempt = async () => {
     try {
       await login();
-      console.log("loginOptions", loginOptions.data);
       document.cookie = `user_token=${loginOptions.data.login.jwt}; path=/`;
+      setUser(loginOptions.data.login.user)
+      Router.push('/')
 
     } catch (err) {
       console.log("error", loginOptions.error);
@@ -34,17 +36,11 @@ const login = () => {
     <Layout>
       <Wrapper>
         <h1 className="text-5xl">Log In</h1>
-
+        {user ? JSON.stringify(user) : ''}
         <form
           onSubmit={(e) => {
             e.preventDefault();
             attempt();
-            // dispatch(
-            //   setUser({
-            //     name: "Kevin Smith",
-            //     email: "ksmith@gmail.com",
-            //   })
-            // );
           }}
           className="flex flex-col space-y-10 mt-6 w-full "
         >

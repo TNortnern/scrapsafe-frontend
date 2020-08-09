@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import Layout from '../components/layout/Layout';
-import Input from '../components/common/Input';
 import Wrapper from '../components/layout/Wrapper';
 import Button from '../components/common/Button';
-
-import AuthHOC, { withAuthed } from '../components/AuthHOC';
+import { withAuthed } from '../components/AuthHOC';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../lib/slices/authSlice';
 import withApollo from '../lib/withApollo';
 
 const IndexPage = (props) => {
   const user = useSelector(selectUser);
+  console.log('props', props)
   const [upload, setUpload] = useState(null);
   const onChange = (file) => {
     // var file = this.refs.file.files[0];
@@ -49,4 +48,4 @@ const IndexPage = (props) => {
   );
 };
 
-export default withAuthed(withApollo(IndexPage));
+export default withAuthed(IndexPage);
