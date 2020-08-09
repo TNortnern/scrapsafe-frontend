@@ -13,7 +13,7 @@ const Navbar = () => {
         {!user ? (
           <UnauthedRoutes />
         ) : (
-          <AuthedRoutes user={user} setUser={setUser} />
+          <AuthedRoutes setUser={setUser} />
         )}
       </ul>
     </nav>

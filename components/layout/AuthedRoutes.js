@@ -2,7 +2,7 @@ import Link from "next/link";
 import { remove } from "js-cookie";
 import Router from "next/router";
 
-const AuthedRoutes = () => {
+const AuthedRoutes = ({setUser}) => {
     return (
       <>
         <li>

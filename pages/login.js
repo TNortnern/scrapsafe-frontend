@@ -37,7 +37,6 @@ const login = () => {
       <Wrapper>
         <div className="text-center">
           <h1 className="text-5xl">Log In</h1>
-          {user ? JSON.stringify(user) : ""}
           <form
             method="POST"
             action="#"
@@ -60,7 +59,7 @@ const login = () => {
               value={password}
             />
             <div className="text-center">
-              <Button type="submit" className="hover:opacity-75 inline-block">
+              <Button type="submit" className={`hover:opacity-75 inline-block ${loginOptions.loading ? 'cursor-not-allowed opacity-50' : ''}`}>
                 Login
               </Button>
             </div>
