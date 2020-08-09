@@ -18,7 +18,7 @@ const IndexPage = ({user}) => {
       name: faker.name.findName(),
       type: faker.name.jobType(),
       user_prediction: result,
-      user: user.id,
+      user: user ? user.id : '',
       image: faker.image.technics()
     }
   })
