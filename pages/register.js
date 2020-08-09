@@ -10,13 +10,14 @@ import { REGISTER } from "../lib/graphql/auth";
 import AppContext from "../components/context/AuthContext";
 import withApollo from "../lib/withApollo";
 import Router from "next/router";
-import { set } from 'js-cookie'
+import { set } from "js-cookie";
 
 const register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [active, setActive] = useState("free");
   const { setUser } = useContext(AppContext);
   const [register, registerOptions] = useMutation(REGISTER, {
     variables: {
@@ -31,7 +32,7 @@ const register = () => {
     try {
       const res = await register();
       setUser(res.data.register.user);
-      set('user_token', res.data.register.jwt)
+      set("user_token", res.data.register.jwt);
       Router.push("/");
     } catch (err) {
       console.log("error", registerOptions.error);
@@ -46,7 +47,7 @@ const register = () => {
             A description of what you get with a paid plan that can be either
             long or short
           </p>
-          <FreePaidButton />
+          <FreePaidButton active={active} setActive={setActive} />
           <form
             method="POST"
             action="#"
