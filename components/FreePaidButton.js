@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-const FreePaidButton = () => {
-  const [active, setActive] = useState('free');
+const FreePaidButton = ({ active, setActive }) => {
   const classes = "w-32 sm:w-40 text-center py-1";
   return (
     <div className="flex mt-4 justify-center">
