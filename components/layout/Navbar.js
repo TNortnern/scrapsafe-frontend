@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <nav className="flex justify-between py-2 mx-4 relative z-50">
       <NavLogo />
-      <ul className="flex space-x-2">
+      <ul className="flex space-x-5">
         {!user ? (
           <UnauthedRoutes />
         ) : (
