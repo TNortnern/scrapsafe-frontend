@@ -1,17 +1,42 @@
-import React, { useState } from 'react';
-import Layout from '../components/layout/Layout';
-import Input from '../components/common/Input';
-import Wrapper from '../components/layout/Wrapper';
-import FreePaidButton from '../components/FreePaidButton';
-import Button from '../components/common/Button';
-import { withGuest } from '../components/AuthHOC';
+import { useMutation } from "@apollo/client";
+import React, { useState, useContext } from "react";
+import Layout from "../components/layout/Layout";
+import Input from "../components/common/Input";
+import Wrapper from "../components/layout/Wrapper";
+import FreePaidButton from "../components/FreePaidButton";
+import Button from "../components/common/Button";
+import { withGuest } from "../components/AuthHOC";
+import { REGISTER } from "../lib/graphql/auth";
+import AppContext from "../components/context/AuthContext";
+import withApollo from "../lib/withApollo";
+import Router from "next/router";
+import { set } from 'js-cookie'
 
 const register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
-
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const { setUser } = useContext(AppContext);
+  const [register, registerOptions] = useMutation(REGISTER, {
+    variables: {
+      name,
+      username: `${name} ${new Date().toString()}`,
+      email,
+      password,
+    },
+  });
+  const attempt = async () => {
+    if (password !== repeatPassword) return;
+    try {
+      const res = await register();
+      setUser(res.data.register.user);
+      set('user_token', res.data.register.jwt)
+      Router.push("/");
+    } catch (err) {
+      console.log("error", registerOptions.error);
+    }
+  };
   return (
     <Layout>
       <Wrapper>
@@ -22,7 +47,15 @@ const register = () => {
             long or short
           </p>
           <FreePaidButton />
-          <div className="flex flex-col space-y-10 mt-6 w-auth-inputs">
+          <form
+            method="POST"
+            action="#"
+            onSubmit={(e) => {
+              e.preventDefault();
+              attempt();
+            }}
+            className="flex flex-col space-y-10 mt-6 w-auth-inputs"
+          >
             <Input
               onChange={(e) => setName(e.target.value)}
               placeholder="Name"
@@ -46,13 +79,19 @@ const register = () => {
               placeholder="Repeat Password"
               value={repeatPassword}
             />
-          </div>
-
-          <Button className="mx-auto block mt-5">Sign Up</Button>
+            <Button
+              type="submit"
+              className={`mx-auto block mt-5 ${
+                registerOptions.loading ? "cursor-not-allowed opacity-50" : ""
+              }`}
+            >
+              Sign Up
+            </Button>
+          </form>
         </div>
       </Wrapper>
     </Layout>
   );
 };
 
-export default withGuest(register);
+export default withGuest(withApollo(register));

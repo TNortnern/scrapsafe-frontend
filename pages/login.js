@@ -6,14 +6,14 @@ import Button from "../components/common/Button";
 import { LOGIN } from "../lib/graphql/auth";
 import { useMutation } from "@apollo/client";
 import withApollo from "../lib/withApollo";
-import Link from "next/link";
 import { withGuest } from "../components/AuthHOC";
 import AppContext from "../components/context/AuthContext";
-
 import Router from "next/router";
+import { set } from 'js-cookie';
+
 const login = () => {
   const [email, setEmail] = useState("");
-  const { setUser, user } = useContext(AppContext)
+  const { setUser } = useContext(AppContext)
   const [password, setPassword] = useState("");
   const [login, loginOptions] = useMutation(LOGIN, {
     variables: {
@@ -23,9 +23,9 @@ const login = () => {
   });
   const attempt = async () => {
     try {
-      await login();
-      document.cookie = `user_token=${loginOptions.data.login.jwt}; path=/`;
-      setUser(loginOptions.data.login.user)
+      const res = await login();
+      setUser(res.data.login.user);
+      set("user_token", res.data.login.jwt);
       Router.push('/')
 
     } catch (err) {
