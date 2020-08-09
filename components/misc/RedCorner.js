@@ -1,0 +1,15 @@
+const RedCorner = () => {
+    return (
+      <svg
+        width="145"
+        height="139"
+        viewBox="0 0 145 139"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M0 139H144.921L0 0.597656V139Z" fill="#BB4040" />
+      </svg>
+    );
+}
+
+export default RedCorner;
