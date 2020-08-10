@@ -5,7 +5,6 @@ import Wrapper from "../components/layout/Wrapper";
 import Button from "../components/common/Button";
 import { LOGIN } from "../lib/graphql/auth";
 import { useMutation } from "@apollo/client";
-import withApollo from "../lib/withApollo";
 import { withGuest } from "../components/AuthHOC";
 import AppContext from "../components/context/AuthContext";
 import Router from "next/router";
@@ -76,4 +75,4 @@ const login = () => {
   );
 };
 
-export default withGuest(withApollo(login));
+export default withGuest(login);

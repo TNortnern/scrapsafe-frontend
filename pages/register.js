@@ -8,7 +8,6 @@ import Button from "../components/common/Button";
 import { withGuest } from "../components/AuthHOC";
 import { REGISTER } from "../lib/graphql/auth";
 import AppContext from "../components/context/AuthContext";
-import withApollo from "../lib/withApollo";
 import Router from "next/router";
 import { set } from "js-cookie";
 
@@ -95,4 +94,4 @@ const register = () => {
   );
 };
 
-export default withGuest(withApollo(register));
+export default withGuest(register);

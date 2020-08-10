@@ -4,7 +4,6 @@ import Layout from "../components/layout/Layout";
 import Wrapper from "../components/layout/Wrapper";
 import Button from "../components/common/Button";
 import { withAuthed } from "../components/AuthHOC";
-import withApollo from "../lib/withApollo";
 import UploadLogo from "../components/misc/UploadLogo";
 import { CREATE_ENTRY } from '../lib/graphql/entries'
 import { useMutation } from "@apollo/client";
@@ -100,4 +99,4 @@ const IndexPage = ({user}) => {
   );
 };
 
-export default withAuthed(withApollo(IndexPage));
+export default withAuthed(IndexPage);
