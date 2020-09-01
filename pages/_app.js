@@ -8,7 +8,7 @@ import { ApolloProvider } from "@apollo/client";
 import { withApollo } from "../lib/apolloClient";
 
 const MyApp = ({ Component, pageProps, fetchedUser, apollo }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(fetchedUser);
   useEffect(() => {
     if (fetchedUser) {
       setUser(fetchedUser);
