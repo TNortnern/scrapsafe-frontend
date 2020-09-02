@@ -19,15 +19,10 @@ const gridview = ({ user }) => {
                 <div className="max-w-xs sm:w-4/12 w-1/2 lg:w-8/12 my-2">
                   <img className=" " src="/fake1.png" alt="fake" />
                   <p>
-                    <span className="font-bold">Jack Norman - </span>
-                    Lorem ipsum dolor sit amet.
+                    <span className="font-bold">Type: </span> { entry.type }
                   </p>
                   <p>
-                    <span className="font-bold">Type: </span> Lorem ipsum dolor
-                    sit amet.
-                  </p>
-                  <p>
-                    <span className="font-bold">Hazmat:</span> Mercury
+                    <span className="font-bold">Hazmat:</span> { entry.user_prediction }
                   </p>
                 </div>
               ))}
