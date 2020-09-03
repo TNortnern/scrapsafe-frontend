@@ -10,14 +10,18 @@ const gridview = ({ user }) => {
   }, []);
   return (
     <Layout>
-      <div className="w-11/12 lg:w-11/12  mx-auto px-3">
+      <div className="w-11/12 px-3 mx-auto lg:w-11/12">
         <div className="flex flex-wrap justify-center text-xs">
           {/* Start of first div */}
           {user && user.entries.length ? (
             <>
               {user.entries.map((entry) => (
-                <div className="max-w-xs sm:w-4/12 w-1/2 lg:w-8/12 my-2">
-                  <img className=" " src="/fake1.png" alt="fake" />
+                <div className="w-1/2 max-w-xs my-2 sm:w-4/12 lg:w-8/12">
+                  <img
+                    className=""
+                    src={entry.image || "/fake1.png"}
+                    alt="fake"
+                  />
                   <p>
                     <span className="font-bold">Type: </span>{" "}
                     {entry.actual_result || "Non-Hazardous"}

@@ -1,41 +1,46 @@
 import React, { useState } from "react";
-import faker from 'faker';
-import axios from 'axios'
+import faker from "faker";
+import axios from "axios";
 import Layout from "../components/layout/Layout";
 import Wrapper from "../components/layout/Wrapper";
 import Button from "../components/common/Button";
 import { withAuthed } from "../components/AuthHOC";
 import UploadLogo from "../components/misc/UploadLogo";
-import { CREATE_ENTRY } from '../lib/graphql/entries'
+import { CREATE_ENTRY } from "../lib/graphql/entries";
 import { useMutation } from "@apollo/client";
+import Cookie from "js-cookie";
 
-const IndexPage = ({user}) => {
+const IndexPage = ({ user }) => {
   const [upload, setUpload] = useState(null);
   const [fileObj, setFile] = useState(null);
+  const [image, setImage] = useState(null);
   const [result, setResult] = useState("");
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [createEntry, createEntryOptions] = useMutation(CREATE_ENTRY, {
-    variables:{
+    variables: {
       name: user.name,
       type: faker.name.jobType(),
       user_prediction: result,
-      user: user ? user.id : '',
-      image: faker.image.technics()
-    }
-  })
+      user: user ? user.id : "",
+      image,
+    },
+  });
   const onChange = async (file) => {
     setFile(file[0]);
-    const fd = new FormData()
-    fd.append('file', file[0])
+    const fd = new FormData();
+    fd.append("file", file[0]);
     try {
-      setLoading(true)
-      const { data } = await axios.post("http://167.172.128.124:80/analyze", fd);
-      setLoading(false)
-      console.log('data', data)
-      setResult(data.result)
+      setLoading(true);
+      const { data } = await axios.post(
+        "http://167.172.128.124:80/analyze",
+        fd
+      );
+      setLoading(false);
+      console.log("data", data);
+      setResult(data.result);
     } catch (err) {
-      console.log('err', err)
-      setLoading(false)
+      console.log("err", err);
+      setLoading(false);
     }
     var reader = new FileReader();
     reader.readAsDataURL(file[0]);
@@ -52,8 +57,23 @@ const IndexPage = ({user}) => {
         <form
           onSubmit={async (e) => {
             e.preventDefault();
+            setLoading(true);
             try {
+              const fd = new FormData()
+              fd.append("files", fileObj);
+              const fileupload = await axios.post(
+                "https://scrapsafe-be.herokuapp.com/upload",
+                fd,
+                {
+                  headers: {
+                    Authorization: `Bearer ${Cookie.get("user_token")}`,
+                  },
+                }
+              );
+              setImage(fileupload.data[0].url);
               const res = await createEntry();
+              setLoading(false);
+              alert('new entry!')
             } catch (err) {
               console.log("err", err);
             }
@@ -102,7 +122,11 @@ const IndexPage = ({user}) => {
           ) : (
             ""
           )}
-          {loading ? <span className="block text-center font-bold">Loading...</span> : ""}
+          {loading ? (
+            <span className="block font-bold text-center">Loading...</span>
+          ) : (
+            ""
+          )}
         </form>
       </Wrapper>
     </Layout>
