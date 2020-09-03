@@ -16,7 +16,7 @@ const IndexPage = ({user}) => {
   const [loading, setLoading] = useState(false)
   const [createEntry, createEntryOptions] = useMutation(CREATE_ENTRY, {
     variables:{
-      name: faker.name.findName(),
+      name: user.name,
       type: faker.name.jobType(),
       user_prediction: result,
       user: user ? user.id : '',
