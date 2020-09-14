@@ -12,6 +12,7 @@ import { set } from 'js-cookie';
 
 const login = () => {
   const [email, setEmail] = useState("");
+  const [invalid, setInvalid] = useState(null)
   const { setUser } = useContext(AppContext)
   const [password, setPassword] = useState("");
   const [login, loginOptions] = useMutation(LOGIN, {
@@ -21,13 +22,14 @@ const login = () => {
     },
   });
   const attempt = async () => {
+    setInvalid(false)
     try {
       const res = await login();
       setUser(res.data.login.user);
       set("user_token", res.data.login.jwt);
       Router.push('/')
-
     } catch (err) {
+      setInvalid(true)
       console.log("error", loginOptions.error);
     }
   };
@@ -36,6 +38,7 @@ const login = () => {
       <Wrapper>
         <div className="text-center">
           <h1 className="text-5xl">Log In</h1>
+          { invalid && <span className="text-red-500">Invalid email or password.</span> }
           <form
             method="POST"
             action="#"
@@ -43,7 +46,7 @@ const login = () => {
               e.preventDefault();
               attempt();
             }}
-            className="flex flex-col space-y-10 mt-6 w-auth-inputs"
+            className="flex flex-col mt-6 space-y-10 w-auth-inputs"
           >
             <Input
               onChange={(e) => setEmail(e.target.value)}
@@ -65,7 +68,7 @@ const login = () => {
           </form>
           <span
             href="/forgotpassword"
-            className="mt-4 block hover:text-green-custom cursor-pointer"
+            className="block mt-4 cursor-pointer hover:text-green-custom"
           >
             Forgot your password?
           </span>
