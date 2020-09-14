@@ -21,7 +21,7 @@ const gridview = ({ user }) => {
           {stateUser && stateUser.entries.length ? (
             <>
               {stateUser.entries.map((entry) => (
-                <div className="w-1/2 max-w-xs my-2 sm:w-4/12 lg:w-8/12">
+                <div key={entry.id} className="w-1/2 max-w-xs my-2 sm:w-4/12 lg:w-8/12">
                   <img
                     className=""
                     src={entry.image || "/fake1.png"}

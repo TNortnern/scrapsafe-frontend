@@ -15,13 +15,14 @@ const Button = ({ children, className, variant, onClick, type }) => {
 
 Button.propTypes = {
   variant: PropTypes.string,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   type: PropTypes.string,
 };
 
 Button.defaultProps = {
   variant: 'btn-green',
   type: 'button',
+  onClick: () => []
 };
 
 export default Button;
