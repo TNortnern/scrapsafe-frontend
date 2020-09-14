@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import faker from "faker";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 import Layout from "../components/layout/Layout";
 import Wrapper from "../components/layout/Wrapper";
 import Button from "../components/common/Button";
@@ -10,7 +11,11 @@ import { CREATE_ENTRY } from "../lib/graphql/entries";
 import { useMutation } from "@apollo/client";
 import Cookie from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuthUser, selectUser, updateUserEntries } from "../lib/slices/authSlice";
+import {
+  setAuthUser,
+  selectUser,
+  updateUserEntries,
+} from "../lib/slices/authSlice";
 
 const IndexPage = ({ user }) => {
   const [upload, setUpload] = useState(null);
@@ -50,15 +55,28 @@ const IndexPage = ({ user }) => {
       setUpload([e.target.result]);
     };
   };
- const dispatch = useDispatch();
- const stateUser = useSelector(selectUser);
- useEffect(() => {
-   if (!stateUser) {
-     dispatch(setAuthUser(user));
-   }
- }, []);
+  const dispatch = useDispatch();
+  const stateUser = useSelector(selectUser);
+  useEffect(() => {
+    if (!stateUser) {
+      dispatch(setAuthUser(user));
+    }
+  }, []);
+      const notify = () => toast.success("New entry created!");
+
   return (
     <Layout>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Wrapper>
         <h1 className="text-5xl">Upload</h1>
         <img className="w-1/3" src={upload && upload[0]} />
@@ -67,7 +85,7 @@ const IndexPage = ({ user }) => {
             e.preventDefault();
             setLoading(true);
             try {
-              const fd = new FormData()
+              const fd = new FormData();
               fd.append("files", fileObj);
               const fileupload = await axios.post(
                 "https://scrapsafe-be.herokuapp.com/upload",
@@ -79,11 +97,16 @@ const IndexPage = ({ user }) => {
                 }
               );
               setImage(fileupload.data[0].url);
-              const { data: { createEntry: { entry } } } = await createEntry();
-              console.log('entry', entry)
-              dispatch(updateUserEntries(entry))
+              const {
+                data: {
+                  createEntry: { entry },
+                },
+              } = await createEntry();
+              console.log("entry", entry);
+              dispatch(updateUserEntries(entry));
               setLoading(false);
-              alert('new entry!')
+              notify();
+              // alert("new entry!");
             } catch (err) {
               console.log("err", err);
             }

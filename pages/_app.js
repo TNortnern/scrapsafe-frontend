@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Provider } from "react-redux";
 import AuthContext from "../components/context/AuthContext";
 import "../styles/index.css";
+import "react-toastify/dist/ReactToastify.css";
 import store from "../store";
 import { fetchUser } from "../lib/auth";
 import { ApolloProvider } from "@apollo/client";
