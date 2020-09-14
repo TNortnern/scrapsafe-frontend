@@ -1,21 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import Layout from '../components/layout/Layout';
-import Wrapper from '../components/layout/Wrapper';
+import React, { useState, useEffect } from "react";
+import Layout from "../components/layout/Layout";
+import Wrapper from "../components/layout/Wrapper";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuthUser, selectUser } from "../lib/slices/authSlice";
 
 const gridview = ({ user }) => {
   const [images, setImages] = useState([]);
-
+  const dispatch = useDispatch()
+  const stateUser = useSelector(selectUser)
   useEffect(() => {
-    console.log('user', user)
+    if (!stateUser) {
+      dispatch(setAuthUser(user));
+    }
   }, []);
   return (
     <Layout>
       <div className="w-11/12 px-3 mx-auto lg:w-11/12">
         <div className="flex flex-wrap justify-center text-xs">
           {/* Start of first div */}
-          {user && user.entries.length ? (
+          {stateUser && stateUser.entries.length ? (
             <>
-              {user.entries.map((entry) => (
+              {stateUser.entries.map((entry) => (
                 <div className="w-1/2 max-w-xs my-2 sm:w-4/12 lg:w-8/12">
                   <img
                     className=""

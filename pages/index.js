@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import faker from "faker";
 import axios from "axios";
 import Layout from "../components/layout/Layout";
@@ -9,6 +9,8 @@ import UploadLogo from "../components/misc/UploadLogo";
 import { CREATE_ENTRY } from "../lib/graphql/entries";
 import { useMutation } from "@apollo/client";
 import Cookie from "js-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuthUser, selectUser, updateUserEntries } from "../lib/slices/authSlice";
 
 const IndexPage = ({ user }) => {
   const [upload, setUpload] = useState(null);
@@ -48,7 +50,13 @@ const IndexPage = ({ user }) => {
       setUpload([e.target.result]);
     };
   };
-
+ const dispatch = useDispatch();
+ const stateUser = useSelector(selectUser);
+ useEffect(() => {
+   if (!stateUser) {
+     dispatch(setAuthUser(user));
+   }
+ }, []);
   return (
     <Layout>
       <Wrapper>
@@ -71,7 +79,9 @@ const IndexPage = ({ user }) => {
                 }
               );
               setImage(fileupload.data[0].url);
-              const res = await createEntry();
+              const { data: { createEntry: { entry } } } = await createEntry();
+              console.log('entry', entry)
+              dispatch(updateUserEntries(entry))
               setLoading(false);
               alert('new entry!')
             } catch (err) {
