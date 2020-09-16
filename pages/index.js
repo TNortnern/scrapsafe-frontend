@@ -39,7 +39,7 @@ const IndexPage = ({ user }) => {
     try {
       setLoading(true);
       const { data } = await axios.post(
-        "http://167.172.128.124:80/analyze",
+        "https://ml.meter-vision.com/analyze",
         fd
       );
       setLoading(false);
