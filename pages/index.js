@@ -88,7 +88,7 @@ const IndexPage = ({ user }) => {
               const fd = new FormData();
               fd.append("files", fileObj);
               const fileupload = await axios.post(
-                "https://scrapsafe-be.herokuapp.com/upload",
+                `${process.env.API_URL}/upload`,
                 fd,
                 {
                   headers: {
